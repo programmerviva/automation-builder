@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { UserButton } from '@clerk/nextjs'
 import { MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Props = {}
+type Props = " "
 
 const Navbar = async (props: Props) => {
   return (
@@ -60,9 +62,8 @@ const Navbar = async (props: Props) => {
            </span>
           </Link>
           {/* WIP: wire up user  */}
-          <MenuIcon className="md:hidden">
-
-          </MenuIcon>
+          <UserButton />
+          <MenuIcon className="md:hidden"/>
         </aside>
     </header>
   )

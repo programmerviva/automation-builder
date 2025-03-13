@@ -1,41 +1,45 @@
-import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/providers/theme-provider"
+import type { Metadata } from 'next'
+import { DM_Sans } from 'next/font/google'
+import './globals.css'
+import { ThemeProvider } from '@/providers/theme-provider'
+import { ClerkProvider } from '@clerk/nextjs'
+import ModalProvider from '@/providers/modal-provider'
+import { Toaster } from '@/components/ui/sonner'
+import { BillingProvider } from '@/providers/billing-provider'
 
-const geistSans = DM_Sans({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = DM_Sans({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const font = DM_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Fuzzie",
-  description: "Automate your work with fuzzie.",
-};
+  title: 'Fuzzie.',
+  description: 'Automate Your Work With Fuzzie.',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" >
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > <ThemeProvider
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    >
+      <html lang="en">
+        <body className={font.className}>
+          <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <BillingProvider>
+              <ModalProvider>
+                {children}
+                <Toaster />
+              </ModalProvider>
+            </BillingProvider>
           </ThemeProvider>
-      </body>
-    </html>
-  );
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }
